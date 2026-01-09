@@ -67,7 +67,9 @@ func _ready() -> void:
 		_register_input_actions()
 
 	_character_skin.stepped.connect(play_foot_step_sound)
-
+	
+	GDInsightAPI.data_sender.on_new_player.emit(randi_range(10, 50), "Spain", randf_range(0,1))
+	GDInsightAPI.data_sender.on_start_session.emit()
 
 func _physics_process(delta: float) -> void:
 	# Calculate ground height for camera controller
