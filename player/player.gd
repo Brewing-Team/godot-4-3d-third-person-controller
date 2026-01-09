@@ -54,6 +54,11 @@ enum WEAPON_TYPE { DEFAULT, GRENADE }
 @onready var _shoot_cooldown_tick := shoot_cooldown
 @onready var _grenade_cooldown_tick := grenade_cooldown
 
+# Movement tracking for data sending
+@onready var _movement_update_timer := 0.0
+@onready var _min_update_interval := 0.1  # Fastest update rate (when moving fast)
+@onready var _max_update_interval := 1.0  # Slowest update rate (when idle/slow)
+
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	_camera_controller.setup(self)
@@ -180,6 +185,23 @@ func _physics_process(delta: float) -> void:
 	var epsilon := 0.001
 	if delta_position.length() < epsilon and velocity.length() > epsilon:
 		global_position += get_wall_normal() * 0.1
+
+	# Track and send movement data dynamically
+	_track_movement_data(delta, global_position, velocity, _last_strong_direction)
+
+
+func _track_movement_data(delta: float, pos: Vector3, vel: Vector3, looking_dir: Vector3) -> void:
+	# Update timer
+	_movement_update_timer += delta
+	
+	# Calculate dynamic update interval: faster movement = more frequent updates
+	var speed_ratio: float = clamp(vel.length() / move_speed, 0.0, 1.0)
+	var current_update_interval: float = lerp(_max_update_interval, _min_update_interval, speed_ratio)
+	
+	# Send data when interval is reached
+	if _movement_update_timer >= current_update_interval:
+		_movement_update_timer = 0.0
+		GDInsightAPI.data_sender.on_player_moved.emit(pos, vel, looking_dir)
 
 
 func attack() -> void:
