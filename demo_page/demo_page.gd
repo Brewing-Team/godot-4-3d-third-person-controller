@@ -72,6 +72,8 @@ func resume_demo() -> void:
 
 
 func _on_exit_pressed() -> void:
+	exit_button.disabled = true
+	get_tree().paused = false
 	GDInsightAPI.data_sender.on_end_session.emit()
-	await get_tree().create_timer(0.5).timeout
+	await GDInsightAPI.data_sender.session_ended
 	get_tree().quit()
