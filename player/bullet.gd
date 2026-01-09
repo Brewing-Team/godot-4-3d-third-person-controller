@@ -39,5 +39,5 @@ func _on_body_entered(body: Node3D) -> void:
 	if body.is_in_group("damageables"):
 		var impact_point := global_position - body.global_position
 		body.damage(impact_point, velocity)
-		GDInsightAPI.data_sender.on_player_attack.emit(100, impact_point, velocity.normalized(), GDInsightAPI.data_sender.ATTACK_TYPE.SHOOT, -1)
+		GDInsightAPI.data_sender.on_player_attack.emit(100, impact_point, velocity.normalized(), GDInsightAPI.data_sender.ATTACK_TYPE.SHOOT, body.get("id"))
 	queue_free()
