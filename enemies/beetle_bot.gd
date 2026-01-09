@@ -3,6 +3,9 @@ extends RigidBody3D
 const COIN_SCENE := preload("res://player/coin/coin.tscn")
 const PUFF_SCENE := preload("smoke_puff/smoke_puff.tscn")
 
+var id := 2
+var enemy_type: String = "beetle_bot"
+
 @export var coins_count := 5
 @export var stopping_distance := 0.0
 

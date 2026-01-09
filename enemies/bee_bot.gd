@@ -4,6 +4,9 @@ const COIN_SCENE := preload("res://player/coin/coin.tscn")
 const BULLET_SCENE := preload("res://player/bullet.tscn")
 const PUFF_SCENE := preload("smoke_puff/smoke_puff.tscn")
 
+var id := 1
+var enemy_type: String = "bee_bot"
+
 @export var shoot_timer := 1.5
 @export var bullet_speed := 6.0
 @export var coins_count := 5
