@@ -61,15 +61,17 @@ func _ready() -> void:
 	_grenade_aim_controller.visible = false
 	weapon_switched.emit(WEAPON_TYPE.keys()[0])
 
-	# When copying this character to a new project, the project may lack required input actions.
-	# In that case, we register input actions for the user at runtime.
 	if not InputMap.has_action("move_left"):
 		_register_input_actions()
 
 	_character_skin.stepped.connect(play_foot_step_sound)
 	
-	GDInsightAPI.data_sender.on_new_player.emit(randi_range(10, 50), "Spain", randf_range(0,1))
+	GDInsightAPI.data_sender.on_new_player.emit(randi_range(10, 50), "Spain", randf_range(0,1))	
+	GDInsightAPI.data_sender.player_created_successfully.connect(_on_player_created)
+
+func _on_player_created() -> void:
 	GDInsightAPI.data_sender.on_start_session.emit()
+	GDInsightAPI.data_sender.player_created_successfully.disconnect(_on_player_created)
 
 func _physics_process(delta: float) -> void:
 	# Calculate ground height for camera controller
