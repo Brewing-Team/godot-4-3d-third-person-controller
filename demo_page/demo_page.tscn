@@ -536,3 +536,5 @@ ignore_texture_size = true
 stretch_mode = 5
 script = ExtResource("9_scsih")
 link = "https://gdquest.itch.io/"
+
+[connection signal="pressed" from="CanvasLayer/DemoPageRoot/Content/MarginContainer/Buttons/Exit" to="." method="_on_exit_pressed"]

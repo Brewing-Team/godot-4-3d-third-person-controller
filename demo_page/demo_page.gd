@@ -19,7 +19,7 @@ func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	
 	resume_button.pressed.connect(resume_demo)
-	exit_button.pressed.connect(get_tree().quit)
+	#exit_button.pressed.connect(get_tree().quit)
 	keyboard_button.pressed.connect(change_instruction.bind(INSTRUCTION_TYPES.KEYBOARD))
 	joypad_button.pressed.connect(change_instruction.bind(INSTRUCTION_TYPES.JOYPAD))
 	
@@ -69,3 +69,9 @@ func resume_demo() -> void:
 	tween.tween_property(demo_page_root, "modulate", Color.TRANSPARENT, 0.3)
 	tween.tween_callback(demo_page_root.hide)
 	Input.mouse_mode = _demo_mouse_mode as Input.MouseMode
+
+
+func _on_exit_pressed() -> void:
+	GDInsightAPI.data_sender.on_end_session.emit()
+	await get_tree().create_timer(0.5).timeout
+	get_tree().quit()
