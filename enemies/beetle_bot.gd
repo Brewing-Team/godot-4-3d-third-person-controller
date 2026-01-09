@@ -55,7 +55,7 @@ func _physics_process(delta: float) -> void:
 					# Throws player up a little bit
 					force.y = 0.5
 					force *= 10.0
-					collider.damage(impact_point, force)
+					collider.damage(self, impact_point, force)
 					_beetle_skin.attack()
 
 
