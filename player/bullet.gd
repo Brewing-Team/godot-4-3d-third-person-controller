@@ -29,6 +29,7 @@ func _process(delta: float) -> void:
 	_bullet_visuals.scale = Vector3.ONE * scale_decay.sample(_time_alive/_alive_limit)
 	
 	if _time_alive > _alive_limit:
+		GDInsightAPI.data_sender.on_player_attack.emit(0, Vector3.ZERO, velocity.normalized(), GDInsightAPI.data_sender.ATTACK_TYPE.SHOOT, -1)
 		queue_free()
 
 
@@ -38,4 +39,5 @@ func _on_body_entered(body: Node3D) -> void:
 	if body.is_in_group("damageables"):
 		var impact_point := global_position - body.global_position
 		body.damage(impact_point, velocity)
+		GDInsightAPI.data_sender.on_player_attack.emit(100, impact_point, velocity.normalized(), GDInsightAPI.data_sender.ATTACK_TYPE.SHOOT, -1)
 	queue_free()

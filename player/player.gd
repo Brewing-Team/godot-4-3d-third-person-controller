@@ -54,7 +54,6 @@ enum WEAPON_TYPE { DEFAULT, GRENADE }
 @onready var _shoot_cooldown_tick := shoot_cooldown
 @onready var _grenade_cooldown_tick := grenade_cooldown
 
-
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	_camera_controller.setup(self)
@@ -203,6 +202,8 @@ func shoot() -> void:
 
 func reset_position() -> void:
 	transform.origin = _start_position
+	
+	GDInsightAPI.data_sender.on_new_attempt.emit()
 
 
 func collect_coin() -> void:
