@@ -219,7 +219,7 @@ func collect_coin() -> void:
 	_ui_coins_container.update_coins_amount(_coins)
 
 
-func lose_coins() -> void:
+func lose_coins() -> int:
 	var lost_coins: int = min(_coins, 5)
 	_coins -= lost_coins
 	for i in lost_coins:
@@ -228,6 +228,8 @@ func lose_coins() -> void:
 		coin.global_position = global_position
 		coin.spawn(1.5)
 	_ui_coins_container.update_coins_amount(_coins)
+	
+	return lost_coins
 
 
 func _get_camera_oriented_input() -> Vector3:
@@ -251,11 +253,12 @@ func play_foot_step_sound() -> void:
 	_step_sound.play()
 
 
-func damage(_impact_point: Vector3, force: Vector3) -> void:
+func damage(enemy: RigidBody3D, _impact_point: Vector3, force: Vector3) -> void:
 	# Always throws character up
 	force.y = abs(force.y)
 	velocity = force.limit_length(max_throwback_force)
-	lose_coins()
+	var lost_coins = lose_coins()
+	GDInsightAPI.data_sender.on_player_damaged.emit(enemy.id, _impact_point, lost_coins)
 
 
 func _orient_character_to_direction(direction: Vector3, delta: float) -> void:
