@@ -223,17 +223,17 @@ func shoot() -> void:
 
 
 func reset_position() -> void:
-	transform.origin = _start_position
-	
 	GDInsightAPI.data_sender.on_player_die.emit(
 		-1,  # enemy_id (replace with actual enemy_id if available)
 		Time.get_unix_time_from_system(),
-		global_position.x,
-		global_position.y,
-		global_position.z,
+		transform.origin.x,
+		transform.origin.y,
+		transform.origin.z,
 		100,  # damage (replace with actual damage if available)
 		DataSender.DEATH_TYPE.WATER
 	)
+	
+	transform.origin = _start_position
 
 
 func collect_coin() -> void:
